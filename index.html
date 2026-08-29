@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Road Trip Quiz</title>
+<style>
+  :root{
+    --night:      #1B2035;
+    --night-2:    #242B49;
+    --night-3:    #2E3660;
+    --rust:       #C1502E;
+    --rust-dark:  #9C3D22;
+    --gold:       #D9A441;
+    --sand:       #EFE4CB;
+    --sand-dim:   #C9BFA5;
+    --teal:       #3C6B62;
+    --teal-light: #5C9187;
+    --good:       #7FA66B;
+    --line:       rgba(239,228,203,0.14);
+    --shadow:     0 14px 30px rgba(0,0,0,0.35);
+    --radius:     18px;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: radial-gradient(120% 140% at 50% -10%, #2A3258 0%, var(--night) 55%, #14172A 100%);
+    color: var(--sand);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Condensed "road sign" display type built from system fonts */
+  .display{
+    font-family: "Arial Narrow", "Helvetica Neue Condensed", Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .stars{
+    position: fixed; inset:0; z-index:0; pointer-events:none; opacity:0.5;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, var(--sand) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 80% 10%, var(--sand) 0, transparent 60%),
+      radial-gradient(1px 1px at 60% 30%, var(--sand-dim) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 30% 60%, var(--sand-dim) 0, transparent 60%),
+      radial-gradient(1px 1px at 90% 70%, var(--sand) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 45% 85%, var(--sand-dim) 0, transparent 60%),
+      radial-gradient(1px 1px at 15% 90%, var(--sand) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 70% 50%, var(--sand-dim) 0, transparent 60%);
+  }
+
+  #app{ position:relative; z-index:1; min-height:100%; display:flex; flex-direction:column; }
+
+  header{
+    padding: 22px 20px 14px;
+    text-align:center;
+  }
+  .brand-eyebrow{
+    font-size: 12px; letter-spacing: 0.28em; color: var(--gold);
+    text-transform: uppercase; font-weight:700; margin-bottom:6px;
+  }
+  h1.title{
+    margin:0; font-size: clamp(28px, 8vw, 40px); line-height:1.02;
+    color: var(--sand);
+  }
+  h1.title span{ color: var(--rust); }
+  .subtitle{ margin-top:8px; color: var(--sand-dim); font-size:14px; max-width:520px; margin-left:auto; margin-right:auto; }
+
+  main{ flex:1; display:flex; flex-direction:column; padding: 6px 16px 28px; max-width:640px; margin:0 auto; width:100%; }
+
+  /* ---------- Home / category picker ---------- */
+  .card{
+    background: linear-gradient(180deg, var(--night-2), var(--night-3));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .dune-top{
+    display:block; width:100%; height:26px; margin-bottom:-1px;
+  }
+
+  .cat-list{ padding: 4px 18px 18px; display:flex; flex-direction:column; gap:2px; }
+  .cat-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding: 13px 4px; border-bottom: 1px solid var(--line);
+  }
+  .cat-row:last-child{ border-bottom:none; }
+  .cat-left{ display:flex; align-items:center; gap:12px; }
+  .cat-swatch{ width:10px; height:10px; border-radius:50%; flex:none; }
+  .cat-name{ font-size:16px; font-weight:600; }
+  .cat-count{ font-size:12px; color: var(--sand-dim); }
+
+  .switch{
+    position:relative; width:46px; height:28px; flex:none; border-radius:999px;
+    background: rgba(239,228,203,0.16); border:none; cursor:pointer; padding:0;
+  }
+  .switch::after{
+    content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+    background: var(--sand); transition: transform .18s ease;
+  }
+  .switch.on{ background: var(--rust); }
+  .switch.on::after{ transform: translateX(18px); }
+
+  .picker-actions{
+    display:flex; gap:10px; padding: 6px 18px 18px;
+  }
+  .link-btn{
+    background:none; border:none; color: var(--teal-light); font-size:13px; font-weight:700;
+    cursor:pointer; padding:6px 0; letter-spacing:0.02em; text-decoration: underline; text-underline-offset:3px;
+  }
+
+  .btn{
+    display:block; width:100%; text-align:center; border:none; cursor:pointer;
+    padding:17px 20px; border-radius: 14px; font-size:17px; font-weight:800;
+    letter-spacing:0.02em; text-transform:uppercase; font-family: inherit;
+    transition: transform .06s ease, filter .15s ease;
+  }
+  .btn:active{ transform: scale(0.98); }
+  .btn-primary{ background: linear-gradient(180deg, #D8663F, var(--rust)); color: #fff; box-shadow: 0 10px 24px rgba(193,80,46,0.35); }
+  .btn-primary:disabled{ opacity:0.4; box-shadow:none; cursor:not-allowed; }
+  .btn-ghost{ background: rgba(239,228,203,0.08); color: var(--sand); border:1px solid var(--line); }
+  .btn-outline-tf{ background: transparent; border:2px solid var(--teal-light); color: var(--sand); }
+
+  .start-wrap{ margin-top:18px; }
+  .hint{ text-align:center; font-size:12px; color: var(--sand-dim); margin-top:10px; }
+
+  /* ---------- Quiz screen ---------- */
+  .hud{ display:flex; align-items:center; justify-content:space-between; margin: 4px 2px 14px; gap:10px; }
+  .odometer{
+    font-family: "Courier New", ui-monospace, monospace; font-weight:700;
+    background: #10131F; border:1px solid var(--line); border-radius:10px;
+    padding: 8px 12px; font-size:14px; letter-spacing:0.06em; color: var(--gold);
+    display:flex; align-items:center; gap:6px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  }
+  .odometer .digits{ background:#000; padding:2px 6px; border-radius:4px; }
+  .hud .quit{ background:none; border:none; color: var(--sand-dim); font-size:13px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+
+  .q-card{ padding: 22px 20px 24px; }
+  .badges{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .badge{
+    font-size:11px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;
+    padding:5px 10px; border-radius:999px; border:1px solid var(--line);
+  }
+  .badge-cat{ color:#10131F; }
+  .badge-type{ background: rgba(239,228,203,0.08); color: var(--sand-dim); }
+
+  .q-text{ font-size: clamp(19px, 5.4vw, 24px); font-weight:700; line-height:1.35; color: var(--sand); margin-bottom:20px; }
+
+  .opts{ display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
+  .opt{
+    display:flex; align-items:center; gap:12px;
+    background: rgba(239,228,203,0.05); border:1px solid var(--line); border-radius:12px;
+    padding: 13px 14px; font-size:15px; cursor:pointer; text-align:left;
+    font-family:inherit; color: var(--sand); transition: background .15s ease, border-color .15s ease;
+  }
+  .opt:active{ background: rgba(239,228,203,0.1); }
+  .opt .letter{
+    width:24px; height:24px; border-radius:7px; background: rgba(239,228,203,0.1);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex:none;
+    color: var(--sand-dim);
+  }
+  .opt.selected{ border-color: var(--teal-light); background: rgba(92,145,135,0.14); }
+  .opt.selected .letter{ background: var(--teal-light); color: #0c1a17; }
+  .opt.correct{ border-color: var(--good); background: rgba(127,166,107,0.16); }
+  .opt.correct .letter{ background: var(--good); color:#10130a; }
+  .opt.wrong-selected{ border-color: var(--rust); }
+  .opt[disabled]{ cursor:default; }
+
+  .tf-row{ display:flex; gap:10px; margin-bottom:6px; }
+  .tf-row .btn-outline-tf{ flex:1; padding:16px; }
+  .tf-row .btn-outline-tf.correct{ background: rgba(127,166,107,0.18); border-color: var(--good); }
+  .tf-row .btn-outline-tf.wrong-selected{ border-color: var(--rust); background: rgba(193,80,46,0.14); }
+
+  .open-hint{ color: var(--sand-dim); font-size:14px; font-style:italic; margin-bottom:6px; }
+
+  .reveal-box{
+    margin-top: 16px; padding: 16px 16px; border-radius:12px;
+    background: rgba(217,164,65,0.08); border: 1px solid rgba(217,164,65,0.35);
+    display:none;
+  }
+  .reveal-box.show{ display:block; }
+  .reveal-label{ font-size:11px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color: var(--gold); margin-bottom:6px; }
+  .reveal-answer{ font-size:19px; font-weight:800; color: var(--sand); margin-bottom:6px; }
+  .reveal-fact{ font-size:13.5px; color: var(--sand-dim); line-height:1.5; }
+
+  .action-row{ display:flex; gap:10px; margin-top:18px; }
+  .action-row .btn{ flex:1; }
+
+  .route-dots{ display:flex; gap:5px; justify-content:center; margin-top:16px; flex-wrap:wrap; max-width:280px; margin-left:auto; margin-right:auto;}
+  .route-dots span{ width:6px; height:6px; border-radius:50%; background: rgba(239,228,203,0.18); }
+  .route-dots span.done{ background: var(--rust); }
+
+  footer{ text-align:center; padding: 6px 20px 26px; color: var(--sand-dim); font-size:11px; letter-spacing:0.03em;}
+
+  .hidden{ display:none !important; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+
+  @media (min-width: 560px){
+    .q-text{ font-size:26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<div id="app">
+  <header>
+    <div class="brand-eyebrow">Windhoek &mdash; Etosha &mdash; Sossusvlei &mdash; Skeleton Coast</div>
+    <h1 class="title display">Road Trip <span>Quiz</span></h1>
+    <p class="subtitle">Hundreds of pub-quiz questions for the long drives. Pick your categories, hand over the wheel of the questions, and don't peek &mdash; the answers stay hidden until you tap reveal.</p>
+  </header>
+
+  <main>
+
+    <!-- HOME / CATEGORY PICKER -->
+    <section id="view-home">
+      <div class="card">
+        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#10131F"></path></svg>
+        <div class="cat-list" id="cat-list"></div>
+        <div class="picker-actions">
+          <button class="link-btn" id="select-all">Select all</button>
+          <button class="link-btn" id="select-none">Clear all</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px; padding:16px 18px;">
+        <div class="cat-row" style="border:none; padding:2px 0;">
+          <div class="cat-left"><span class="cat-name">Shuffle questions</span></div>
+          <button class="switch on" id="toggle-shuffle" aria-label="Toggle shuffle"></button>
+        </div>
+      </div>
+
+      <div class="start-wrap">
+        <button class="btn btn-primary" id="start-btn">Start the quiz</button>
+        <p class="hint" id="pool-hint"></p>
+      </div>
+    </section>
+
+    <!-- QUIZ SCREEN -->
+    <section id="view-quiz" class="hidden">
+      <div class="hud">
+        <div class="odometer">TRIP <span class="digits" id="odo">000</span></div>
+        <button class="quit" id="quit-btn">End &amp; pick categories</button>
+      </div>
+
+      <div class="card q-card">
+        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none" style="margin-top:-22px; margin-bottom:12px;"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#10131F"></path></svg>
+
+        <div class="badges">
+          <span class="badge badge-cat" id="badge-cat"></span>
+          <span class="badge badge-type" id="badge-type"></span>
+        </div>
+
+        <div class="q-text" id="q-text"></div>
+
+        <div id="answer-area"></div>
+
+        <div class="reveal-box" id="reveal-box">
+          <div class="reveal-label">Answer</div>
+          <div class="reveal-answer" id="reveal-answer"></div>
+          <div class="reveal-fact" id="reveal-fact"></div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn btn-ghost" id="reveal-btn">Reveal answer</button>
+          <button class="btn btn-primary hidden" id="next-btn">Next question</button>
+        </div>
+      </div>
+
+      <div class="route-dots" id="route-dots"></div>
+    </section>
+
+  </main>
+
+  <footer>Works fully offline &middot; add more questions any time in questions.js</footer>
+</div>
+
+<script src="questions.js"></script>
+<script src="questions-extra.js"></script>
+<script src="questions-brainteasers.js"></script>
+<script src="questions-travel.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Palette rotation for category swatches/badges ----------
+  var PALETTE = ["#C1502E", "#D9A441", "#5C9187", "#B5763F", "#8E9B5E", "#C77B5E", "#4E88A0", "#B08968", "#9A5A44"];
+  var catColor = {};
+  function colorFor(cat){
+    if(!catColor[cat]){
+      var idx = Object.keys(catColor).length % PALETTE.length;
+      catColor[cat] = PALETTE[idx];
+    }
+    return catColor[cat];
+  }
+
+  // ---------- Build category summary from QUESTIONS ----------
+  var allCats = [];
+  var countByCat = {};
+  (typeof QUESTIONS !== "undefined" ? QUESTIONS : []).forEach(function(q){
+    if(!countByCat[q.cat]){ countByCat[q.cat] = 0; allCats.push(q.cat); }
+    countByCat[q.cat]++;
+  });
+  allCats.forEach(colorFor);
+
+  var selected = {};
+  allCats.forEach(function(c){ selected[c] = true; });
+  var shuffleOn = true;
+
+  // ---------- Render category picker ----------
+  var catListEl = document.getElementById("cat-list");
+  var poolHintEl = document.getElementById("pool-hint");
+  var startBtn = document.getElementById("start-btn");
+
+  function renderCatList(){
+    catListEl.innerHTML = "";
+    allCats.forEach(function(cat){
+      var row = document.createElement("div");
+      row.className = "cat-row";
+
+      var left = document.createElement("div");
+      left.className = "cat-left";
+      var swatch = document.createElement("span");
+      swatch.className = "cat-swatch";
+      swatch.style.background = colorFor(cat);
+      var nameWrap = document.createElement("div");
+      var name = document.createElement("div");
+      name.className = "cat-name";
+      name.textContent = cat;
+      var count = document.createElement("div");
+      count.className = "cat-count";
+      count.textContent = countByCat[cat] + " questions";
+      nameWrap.appendChild(name);
+      nameWrap.appendChild(count);
+      left.appendChild(swatch);
+      left.appendChild(nameWrap);
+
+      var sw = document.createElement("button");
+      sw.className = "switch" + (selected[cat] ? " on" : "");
+      sw.setAttribute("aria-label", "Toggle " + cat);
+      sw.addEventListener("click", function(){
+        selected[cat] = !selected[cat];
+        sw.classList.toggle("on", selected[cat]);
+        updatePoolHint();
+      });
+
+      row.appendChild(left);
+      row.appendChild(sw);
+      catListEl.appendChild(row);
+    });
+    updatePoolHint();
+  }
+
+  function currentPoolSize(){
+    var n = 0;
+    allCats.forEach(function(c){ if(selected[c]) n += countByCat[c]; });
+    return n;
+  }
+
+  function updatePoolHint(){
+    var n = currentPoolSize();
+    poolHintEl.textContent = n > 0 ? (n + " questions in this mix") : "Pick at least one category to start";
+    startBtn.disabled = n === 0;
+  }
+
+  document.getElementById("select-all").addEventListener("click", function(){
+    allCats.forEach(function(c){ selected[c] = true; });
+    renderCatList();
+  });
+  document.getElementById("select-none").addEventListener("click", function(){
+    allCats.forEach(function(c){ selected[c] = false; });
+    renderCatList();
+  });
+
+  var shuffleBtn = document.getElementById("toggle-shuffle");
+  shuffleBtn.addEventListener("click", function(){
+    shuffleOn = !shuffleOn;
+    shuffleBtn.classList.toggle("on", shuffleOn);
+  });
+
+  renderCatList();
+
+  // ---------- Quiz session state ----------
+  var viewHome = document.getElementById("view-home");
+  var viewQuiz = document.getElementById("view-quiz");
+  var queue = [];
+  var askedCount = 0;
+  var poolSizeAtStart = 0;
+  var current = null;
+  var revealed = false;
+
+  function shuffle(arr){
+    for(var i = arr.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function buildQueue(){
+    var pool = QUESTIONS.filter(function(q){ return selected[q.cat]; });
+    if(shuffleOn) shuffle(pool);
+    return pool;
+  }
+
+  document.getElementById("start-btn").addEventListener("click", function(){
+    queue = buildQueue();
+    poolSizeAtStart = queue.length;
+    askedCount = 0;
+    viewHome.classList.add("hidden");
+    viewQuiz.classList.remove("hidden");
+    nextQuestion();
+  });
+
+  document.getElementById("quit-btn").addEventListener("click", function(){
+    viewQuiz.classList.add("hidden");
+    viewHome.classList.remove("hidden");
+  });
+
+  function updateOdometer(){
+    var n = askedCount;
+    var padded = (n < 10 ? "00" : n < 100 ? "0" : "") + n;
+    document.getElementById("odo").textContent = padded;
+    // route dots: show up to 20 dots representing recent progress in this lap
+    var dotsWrap = document.getElementById("route-dots");
+    dotsWrap.innerHTML = "";
+    var lapLen = Math.min(poolSizeAtStart, 24) || 1;
+    var posInLap = ((askedCount - 1) % lapLen + lapLen) % lapLen;
+    for(var i = 0; i < lapLen; i++){
+      var dot = document.createElement("span");
+      if(i <= posInLap) dot.classList.add("done");
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function nextQuestion(){
+    if(queue.length === 0){
+      queue = buildQueue();
+    }
+    current = queue.pop();
+    askedCount++;
+    revealed = false;
+    renderQuestion();
+    updateOdometer();
+  }
+
+  function typeLabel(t){
+    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess" }[t] || t;
+  }
+
+  function renderQuestion(){
+    var badgeCat = document.getElementById("badge-cat");
+    badgeCat.textContent = current.cat;
+    badgeCat.style.background = colorFor(current.cat);
+
+    document.getElementById("badge-type").textContent = typeLabel(current.type);
+    document.getElementById("q-text").textContent = current.q;
+
+    var area = document.getElementById("answer-area");
+    area.innerHTML = "";
+
+    if(current.type === "mcq" && current.opts){
+      var optsWrap = document.createElement("div");
+      optsWrap.className = "opts";
+      var letters = ["A","B","C","D","E"];
+      current.opts.forEach(function(optText, i){
+        var b = document.createElement("button");
+        b.className = "opt";
+        b.innerHTML = '<span class="letter">' + letters[i] + '</span><span>' + escapeHtml(optText) + '</span>';
+        b.addEventListener("click", function(){
+          if(revealed) return;
+          Array.prototype.forEach.call(optsWrap.querySelectorAll(".opt"), function(o){ o.classList.remove("selected"); });
+          b.classList.add("selected");
+        });
+        optsWrap.appendChild(b);
+      });
+      area.appendChild(optsWrap);
+    } else if(current.type === "tf"){
+      var row = document.createElement("div");
+      row.className = "tf-row";
+      ["True","False"].forEach(function(label){
+        var b = document.createElement("button");
+        b.className = "btn btn-outline-tf";
+        b.textContent = label;
+        b.addEventListener("click", function(){
+          if(revealed) return;
+          Array.prototype.forEach.call(row.querySelectorAll("button"), function(o){ o.classList.remove("selected"); });
+          b.classList.add("selected");
+        });
+        row.appendChild(b);
+      });
+      area.appendChild(row);
+    } else {
+      var hint = document.createElement("div");
+      hint.className = "open-hint";
+      hint.textContent = current.type === "estimate" ? "Call out your best guess, then reveal." : "Say your answer out loud, then reveal.";
+      area.appendChild(hint);
+    }
+
+    document.getElementById("reveal-box").classList.remove("show");
+    document.getElementById("reveal-btn").classList.remove("hidden");
+    document.getElementById("next-btn").classList.add("hidden");
+  }
+
+  function escapeHtml(s){
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  document.getElementById("reveal-btn").addEventListener("click", function(){
+    revealed = true;
+    document.getElementById("reveal-answer").textContent = current.a;
+    var factEl = document.getElementById("reveal-fact");
+    factEl.textContent = current.fact || "";
+    factEl.style.display = current.fact ? "block" : "none";
+    document.getElementById("reveal-box").classList.add("show");
+    document.getElementById("reveal-btn").classList.add("hidden");
+    document.getElementById("next-btn").classList.remove("hidden");
+
+    var area = document.getElementById("answer-area");
+    if(current.type === "mcq"){
+      Array.prototype.forEach.call(area.querySelectorAll(".opt"), function(o, i){
+        o.setAttribute("disabled", "true");
+        var text = o.querySelector("span:last-child").textContent;
+        if(text === current.a){ o.classList.add("correct"); }
+        else if(o.classList.contains("selected")){ o.classList.add("wrong-selected"); }
+      });
+    } else if(current.type === "tf"){
+      Array.prototype.forEach.call(area.querySelectorAll("button"), function(o){
+        if(o.textContent === current.a){ o.classList.add("correct"); }
+        else if(o.classList.contains("selected")){ o.classList.add("wrong-selected"); }
+      });
+    }
+  });
+
+  document.getElementById("next-btn").addEventListener("click", nextQuestion);
+
+})();
+</script>
+
+</body>
+</html>
