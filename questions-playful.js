@@ -520,13 +520,13 @@ QUESTIONS.push.apply(QUESTIONS, [
     "cat": "Two Truths and a Lie",
     "type": "mcq",
     "q": "Two truths, one lie about giraffes. Which is the lie?",
-    "a": "Giraffes and humans have the same number of neck vertebrae",
+    "a": "Giraffes have no vocal cords and are physically unable to make any sound",
     "opts": [
       "A giraffe's tongue can be up to 50cm long",
-      "Giraffes and humans have the same number of neck vertebrae",
+      "Giraffes have no vocal cords and are physically unable to make any sound",
       "Giraffes only need a couple of hours of sleep per day"
     ],
-    "fact": "It's true — giraffes have just 7 neck vertebrae, exactly like humans, just each one is enormous — the other two are also true, so this question doubles as a trick."
+    "fact": "Giraffes can and do vocalise — grunts, snorts and hums have all been recorded, they're just rarely heard — the other two are true."
   },
   {
     "id": 872,
