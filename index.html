@@ -208,6 +208,11 @@
     .q-text{ font-size:26px; }
   }
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Road Trip Quiz">
+<meta name="theme-color" content="#1B2035">
 </head>
 <body>
 
@@ -547,6 +552,14 @@
   document.getElementById("next-btn").addEventListener("click", nextQuestion);
 
 })();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(console.error);
+  });
+}
 </script>
 
 </body>
