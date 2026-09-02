@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Road Trip Quiz!</title>
+<title>Road Trip Quiz</title>
 <style>
   :root{
     --night:      #1B2035;
@@ -208,11 +208,6 @@
     .q-text{ font-size:26px; }
   }
 </style>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Road Trip Quiz">
-<meta name="theme-color" content="#1B2035">
 </head>
 <body>
 
@@ -271,7 +266,7 @@
         <div id="answer-area"></div>
 
         <div class="reveal-box" id="reveal-box">
-          <div class="reveal-label">Answer</div>
+          <div class="reveal-label" id="reveal-label">Answer</div>
           <div class="reveal-answer" id="reveal-answer"></div>
           <div class="reveal-fact" id="reveal-fact"></div>
         </div>
@@ -294,6 +289,8 @@
 <script src="questions-extra.js"></script>
 <script src="questions-brainteasers.js"></script>
 <script src="questions-travel.js"></script>
+<script src="questions-round3.js"></script>
+<script src="questions-playful.js"></script>
 <script>
 (function(){
   "use strict";
@@ -460,7 +457,7 @@
   }
 
   function typeLabel(t){
-    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess" }[t] || t;
+    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess", wyr: "Would you rather", emoji: "Emoji decode" }[t] || t;
   }
 
   function renderQuestion(){
@@ -505,10 +502,32 @@
         row.appendChild(b);
       });
       area.appendChild(row);
+    } else if(current.type === "wyr"){
+      var wyrRow = document.createElement("div");
+      wyrRow.className = "tf-row";
+      (current.opts || []).forEach(function(label){
+        var b = document.createElement("button");
+        b.className = "btn btn-outline-tf";
+        b.textContent = label;
+        b.addEventListener("click", function(){
+          if(revealed) return;
+          Array.prototype.forEach.call(wyrRow.querySelectorAll("button"), function(o){ o.classList.remove("selected"); });
+          b.classList.add("selected");
+        });
+        wyrRow.appendChild(b);
+      });
+      area.appendChild(wyrRow);
+      var wyrHint = document.createElement("div");
+      wyrHint.className = "open-hint";
+      wyrHint.style.marginTop = "10px";
+      wyrHint.textContent = "No wrong answer \u2014 pick one, argue about it, then reveal.";
+      area.appendChild(wyrHint);
     } else {
       var hint = document.createElement("div");
       hint.className = "open-hint";
-      hint.textContent = current.type === "estimate" ? "Call out your best guess, then reveal." : "Say your answer out loud, then reveal.";
+      if(current.type === "estimate"){ hint.textContent = "Call out your best guess, then reveal."; }
+      else if(current.type === "emoji"){ hint.textContent = "Decode it, then reveal."; }
+      else { hint.textContent = "Say your answer out loud, then reveal."; }
       area.appendChild(hint);
     }
 
@@ -526,6 +545,7 @@
   document.getElementById("reveal-btn").addEventListener("click", function(){
     revealed = true;
     document.getElementById("reveal-answer").textContent = current.a;
+    document.getElementById("reveal-label").textContent = current.type === "wyr" ? "Worth knowing" : "Answer";
     var factEl = document.getElementById("reveal-fact");
     factEl.textContent = current.fact || "";
     factEl.style.display = current.fact ? "block" : "none";
@@ -552,14 +572,6 @@
   document.getElementById("next-btn").addEventListener("click", nextQuestion);
 
 })();
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(console.error);
-  });
-}
 </script>
 
 </body>
