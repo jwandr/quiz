@@ -26,7 +26,7 @@
 
   html,body{
     margin:0; padding:0; height:100%;
-    background: color-mix(in srgb, darkcyan 50%, black 50%);
+    background: radial-gradient(120% 140% at 50% -10%, #2A3258 0%, var(--night) 55%, #14172A 100%);
     color: var(--sand);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -282,7 +282,7 @@
 
   </main>
 
-  <footer>Works fully offline &middot; add more questions any time in questions.js</footer>
+  <footer>Works fully offline &middot; Scavenger Hunt: passenger spots, driver never searches &middot; add more questions any time</footer>
 </div>
 
 <script src="questions.js"></script>
@@ -294,6 +294,7 @@
 <script src="questions-playful2.js"></script>
 <script src="questions-round4.js"></script>
 <script src="questions-playful3.js"></script>
+<script src="questions-scavenger.js"></script>
 <script>
 (function(){
   "use strict";
@@ -460,7 +461,11 @@
   }
 
   function typeLabel(t){
-    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess", wyr: "Would you rather", emoji: "Emoji decode" }[t] || t;
+    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess", wyr: "Would you rather", emoji: "Emoji decode", scavenger: "Scavenger hunt" }[t] || t;
+  }
+
+  function rarityColor(r){
+    return { Common: "#7FA66B", Uncommon: "#5C9187", Rare: "#D9A441", Legendary: "#C1502E" }[r] || "rgba(239,228,203,0.08)";
   }
 
   function renderQuestion(){
@@ -468,7 +473,16 @@
     badgeCat.textContent = current.cat;
     badgeCat.style.background = colorFor(current.cat);
 
-    document.getElementById("badge-type").textContent = typeLabel(current.type);
+    var badgeType = document.getElementById("badge-type");
+    if(current.type === "scavenger"){
+      badgeType.textContent = current.a; // rarity tier lives in the "a" field for this type
+      badgeType.style.background = rarityColor(current.a);
+      badgeType.style.color = "#10131F";
+    } else {
+      badgeType.textContent = typeLabel(current.type);
+      badgeType.style.background = "";
+      badgeType.style.color = "";
+    }
     document.getElementById("q-text").textContent = current.q;
 
     var area = document.getElementById("answer-area");
@@ -525,6 +539,11 @@
       wyrHint.style.marginTop = "10px";
       wyrHint.textContent = "No wrong answer \u2014 pick one, argue about it, then reveal.";
       area.appendChild(wyrHint);
+    } else if(current.type === "scavenger"){
+      var svHint = document.createElement("div");
+      svHint.className = "open-hint";
+      svHint.textContent = "Passenger calls it \u2014 driver just glances, never searches. First to spot it wins!";
+      area.appendChild(svHint);
     } else {
       var hint = document.createElement("div");
       hint.className = "open-hint";
@@ -534,9 +553,23 @@
       area.appendChild(hint);
     }
 
-    document.getElementById("reveal-box").classList.remove("show");
-    document.getElementById("reveal-btn").classList.remove("hidden");
-    document.getElementById("next-btn").classList.add("hidden");
+    if(current.type === "scavenger"){
+      // No hidden answer here — show the rarity + tip immediately and skip straight to Next
+      revealed = true;
+      document.getElementById("reveal-label").textContent = "Rarity";
+      document.getElementById("reveal-answer").textContent = current.a;
+      var svFactEl = document.getElementById("reveal-fact");
+      svFactEl.textContent = current.fact || "";
+      svFactEl.style.display = current.fact ? "block" : "none";
+      document.getElementById("reveal-box").classList.add("show");
+      document.getElementById("reveal-btn").classList.add("hidden");
+      document.getElementById("next-btn").classList.remove("hidden");
+    } else {
+      document.getElementById("reveal-box").classList.remove("show");
+      document.getElementById("reveal-btn").classList.remove("hidden");
+      document.getElementById("next-btn").classList.add("hidden");
+    }
+    document.getElementById("next-btn").textContent = current.type === "scavenger" ? "Next item" : "Next question";
   }
 
   function escapeHtml(s){
