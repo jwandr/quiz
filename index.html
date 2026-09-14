@@ -6,27 +6,32 @@
 <title>Road Trip Quiz</title>
 <style>
   :root{
-    --night:      #1B2035;
-    --night-2:    #242B49;
-    --night-3:    #2E3660;
-    --rust:       #C1502E;
-    --rust-dark:  #9C3D22;
-    --gold:       #D9A441;
-    --sand:       #EFE4CB;
-    --sand-dim:   #C9BFA5;
-    --teal:       #3C6B62;
-    --teal-light: #5C9187;
-    --good:       #7FA66B;
-    --line:       rgba(239,228,203,0.14);
-    --shadow:     0 14px 30px rgba(0,0,0,0.35);
-    --radius:     18px;
+    --night:      #1B0F30;
+    --night-2:    rgba(58,28,72,0.55);
+    --night-3:    rgba(88,32,64,0.5);
+    --rust:       #FF5D5D;
+    --rust-dark:  #E23E3E;
+    --gold:       #FFC857;
+    --sand:       #FBF4E8;
+    --sand-dim:   #D6C9EE;
+    --teal:       #2DD4BF;
+    --teal-light: #5EEAD4;
+    --good:       #2DD4BF;
+    --line:       rgba(255,255,255,0.16);
+    --shadow:     0 14px 34px rgba(20,6,30,0.45);
+    --radius:     20px;
   }
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
   html,body{
-    margin:0; padding:0; height:100%;
-    background: radial-gradient(120% 140% at 50% -10%, #2A3258 0%, var(--night) 55%, #14172A 100%);
+    margin:0; padding:0; height:100%; min-height:100%;
+    background:
+      radial-gradient(90% 65% at 12% 0%, rgba(255,93,93,0.55) 0%, transparent 55%),
+      radial-gradient(80% 60% at 88% 12%, rgba(255,200,87,0.45) 0%, transparent 55%),
+      radial-gradient(100% 80% at 50% 105%, rgba(45,212,191,0.30) 0%, transparent 60%),
+      linear-gradient(160deg, #23113F 0%, #3B1656 35%, #7A2A5E 65%, #C1473F 100%);
+    background-attachment: fixed;
     color: var(--sand);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -41,7 +46,7 @@
   }
 
   .stars{
-    position: fixed; inset:0; z-index:0; pointer-events:none; opacity:0.5;
+    position: fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35;
     background-image:
       radial-gradient(1.5px 1.5px at 10% 20%, var(--sand) 0, transparent 60%),
       radial-gradient(1.5px 1.5px at 80% 10%, var(--sand) 0, transparent 60%),
@@ -74,7 +79,9 @@
 
   /* ---------- Home / category picker ---------- */
   .card{
-    background: linear-gradient(180deg, var(--night-2), var(--night-3));
+    background: linear-gradient(165deg, var(--night-2), var(--night-3));
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -98,7 +105,7 @@
 
   .switch{
     position:relative; width:46px; height:28px; flex:none; border-radius:999px;
-    background: rgba(239,228,203,0.16); border:none; cursor:pointer; padding:0;
+    background: rgba(255,255,255,0.16); border:none; cursor:pointer; padding:0;
   }
   .switch::after{
     content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
@@ -122,9 +129,9 @@
     transition: transform .06s ease, filter .15s ease;
   }
   .btn:active{ transform: scale(0.98); }
-  .btn-primary{ background: linear-gradient(180deg, #D8663F, var(--rust)); color: #fff; box-shadow: 0 10px 24px rgba(193,80,46,0.35); }
+  .btn-primary{ background: linear-gradient(180deg, #FF8A8A, var(--rust)); color: #fff; box-shadow: 0 10px 24px rgba(255,93,93,0.35); }
   .btn-primary:disabled{ opacity:0.4; box-shadow:none; cursor:not-allowed; }
-  .btn-ghost{ background: rgba(239,228,203,0.08); color: var(--sand); border:1px solid var(--line); }
+  .btn-ghost{ background: rgba(255,255,255,0.08); color: var(--sand); border:1px solid var(--line); }
   .btn-outline-tf{ background: transparent; border:2px solid var(--teal-light); color: var(--sand); }
 
   .start-wrap{ margin-top:18px; }
@@ -134,7 +141,7 @@
   .hud{ display:flex; align-items:center; justify-content:space-between; margin: 4px 2px 14px; gap:10px; }
   .odometer{
     font-family: "Courier New", ui-monospace, monospace; font-weight:700;
-    background: #10131F; border:1px solid var(--line); border-radius:10px;
+    background: #170D28; border:1px solid var(--line); border-radius:10px;
     padding: 8px 12px; font-size:14px; letter-spacing:0.06em; color: var(--gold);
     display:flex; align-items:center; gap:6px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
   }
@@ -147,41 +154,41 @@
     font-size:11px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;
     padding:5px 10px; border-radius:999px; border:1px solid var(--line);
   }
-  .badge-cat{ color:#10131F; }
-  .badge-type{ background: rgba(239,228,203,0.08); color: var(--sand-dim); }
+  .badge-cat{ color:#1A0F2E; }
+  .badge-type{ background: rgba(255,255,255,0.08); color: var(--sand-dim); }
 
   .q-text{ font-size: clamp(19px, 5.4vw, 24px); font-weight:700; line-height:1.35; color: var(--sand); margin-bottom:20px; }
 
   .opts{ display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
   .opt{
     display:flex; align-items:center; gap:12px;
-    background: rgba(239,228,203,0.05); border:1px solid var(--line); border-radius:12px;
+    background: rgba(255,255,255,0.05); border:1px solid var(--line); border-radius:12px;
     padding: 13px 14px; font-size:15px; cursor:pointer; text-align:left;
     font-family:inherit; color: var(--sand); transition: background .15s ease, border-color .15s ease;
   }
-  .opt:active{ background: rgba(239,228,203,0.1); }
+  .opt:active{ background: rgba(255,255,255,0.1); }
   .opt .letter{
-    width:24px; height:24px; border-radius:7px; background: rgba(239,228,203,0.1);
+    width:24px; height:24px; border-radius:7px; background: rgba(255,255,255,0.1);
     display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex:none;
     color: var(--sand-dim);
   }
-  .opt.selected{ border-color: var(--teal-light); background: rgba(92,145,135,0.14); }
+  .opt.selected{ border-color: var(--teal-light); background: rgba(45,212,191,0.14); }
   .opt.selected .letter{ background: var(--teal-light); color: #0c1a17; }
-  .opt.correct{ border-color: var(--good); background: rgba(127,166,107,0.16); }
-  .opt.correct .letter{ background: var(--good); color:#10130a; }
+  .opt.correct{ border-color: var(--good); background: rgba(45,212,191,0.18); }
+  .opt.correct .letter{ background: var(--good); color:#0a1f1c; }
   .opt.wrong-selected{ border-color: var(--rust); }
   .opt[disabled]{ cursor:default; }
 
   .tf-row{ display:flex; gap:10px; margin-bottom:6px; }
   .tf-row .btn-outline-tf{ flex:1; padding:16px; }
-  .tf-row .btn-outline-tf.correct{ background: rgba(127,166,107,0.18); border-color: var(--good); }
-  .tf-row .btn-outline-tf.wrong-selected{ border-color: var(--rust); background: rgba(193,80,46,0.14); }
+  .tf-row .btn-outline-tf.correct{ background: rgba(45,212,191,0.18); border-color: var(--good); }
+  .tf-row .btn-outline-tf.wrong-selected{ border-color: var(--rust); background: rgba(255,93,93,0.14); }
 
   .open-hint{ color: var(--sand-dim); font-size:14px; font-style:italic; margin-bottom:6px; }
 
   .reveal-box{
-    margin-top: 16px; padding: 16px 16px; border-radius:12px;
-    background: rgba(217,164,65,0.08); border: 1px solid rgba(217,164,65,0.35);
+    margin-top: 16px; padding: 16px 16px; border-radius:14px;
+    background: rgba(255,200,87,0.10); border: 1px solid rgba(255,200,87,0.35);
     display:none;
   }
   .reveal-box.show{ display:block; }
@@ -193,7 +200,7 @@
   .action-row .btn{ flex:1; }
 
   .route-dots{ display:flex; gap:5px; justify-content:center; margin-top:16px; flex-wrap:wrap; max-width:280px; margin-left:auto; margin-right:auto;}
-  .route-dots span{ width:6px; height:6px; border-radius:50%; background: rgba(239,228,203,0.18); }
+  .route-dots span{ width:6px; height:6px; border-radius:50%; background: rgba(255,255,255,0.18); }
   .route-dots span.done{ background: var(--rust); }
 
   footer{ text-align:center; padding: 6px 20px 26px; color: var(--sand-dim); font-size:11px; letter-spacing:0.03em;}
@@ -217,7 +224,7 @@
   <header>
     <div class="brand-eyebrow">Windhoek &mdash; Etosha &mdash; Sossusvlei &mdash; Skeleton Coast</div>
     <h1 class="title display">Road Trip <span>Quiz</span></h1>
-    <p class="subtitle">Hundreds of pub-quiz questions for the long drives. Pick your categories, hand over the wheel of the questions, and don't peek &mdash; the answers stay hidden until you tap reveal.</p>
+    <p class="subtitle">Over a thousand pub-quiz questions, games and conversation starters for the long drives. Pick your categories and hand over the wheel of the questions &mdash; quiz answers stay hidden until you tap reveal.</p>
   </header>
 
   <main>
@@ -225,7 +232,7 @@
     <!-- HOME / CATEGORY PICKER -->
     <section id="view-home">
       <div class="card">
-        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#10131F"></path></svg>
+        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#1A0F2E"></path></svg>
         <div class="cat-list" id="cat-list"></div>
         <div class="picker-actions">
           <button class="link-btn" id="select-all">Select all</button>
@@ -254,7 +261,7 @@
       </div>
 
       <div class="card q-card">
-        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none" style="margin-top:-22px; margin-bottom:12px;"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#10131F"></path></svg>
+        <svg class="dune-top" viewBox="0 0 400 26" preserveAspectRatio="none" style="margin-top:-22px; margin-bottom:12px;"><path d="M0 26 L0 14 C 40 2, 90 22, 140 10 C 190 -2, 230 20, 280 8 C 330 -2, 370 18, 400 10 L400 26 Z" fill="#1A0F2E"></path></svg>
 
         <div class="badges">
           <span class="badge badge-cat" id="badge-cat"></span>
@@ -295,12 +302,13 @@
 <script src="questions-round4.js"></script>
 <script src="questions-playful3.js"></script>
 <script src="questions-scavenger.js"></script>
+<script src="questions-conversation.js"></script>
 <script>
 (function(){
   "use strict";
 
   // ---------- Palette rotation for category swatches/badges ----------
-  var PALETTE = ["#C1502E", "#D9A441", "#5C9187", "#B5763F", "#8E9B5E", "#C77B5E", "#4E88A0", "#B08968", "#9A5A44"];
+  var PALETTE = ["#FF5D5D", "#FFC857", "#2DD4BF", "#9B5DE5", "#FF8C42", "#06D6A0", "#F15BB5", "#4CC9F0", "#FFB703"];
   var catColor = {};
   function colorFor(cat){
     if(!catColor[cat]){
@@ -461,11 +469,11 @@
   }
 
   function typeLabel(t){
-    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess", wyr: "Would you rather", emoji: "Emoji decode", scavenger: "Scavenger hunt" }[t] || t;
+    return { mcq: "Multiple choice", open: "Open answer", tf: "True or false", estimate: "Have a guess", wyr: "Would you rather", emoji: "Emoji decode", scavenger: "Scavenger hunt", conversation: "Conversation starter" }[t] || t;
   }
 
   function rarityColor(r){
-    return { Common: "#7FA66B", Uncommon: "#5C9187", Rare: "#D9A441", Legendary: "#C1502E" }[r] || "rgba(239,228,203,0.08)";
+    return { Common: "#2DD4BF", Uncommon: "#4CC9F0", Rare: "#FFC857", Legendary: "#FF5D5D" }[r] || "rgba(255,255,255,0.08)";
   }
 
   function renderQuestion(){
@@ -539,6 +547,11 @@
       wyrHint.style.marginTop = "10px";
       wyrHint.textContent = "No wrong answer \u2014 pick one, argue about it, then reveal.";
       area.appendChild(wyrHint);
+    } else if(current.type === "conversation"){
+      var convHint = document.createElement("div");
+      convHint.className = "open-hint";
+      convHint.textContent = "No right answer \u2014 take turns, then tap for a follow-up question.";
+      area.appendChild(convHint);
     } else if(current.type === "scavenger"){
       var svHint = document.createElement("div");
       svHint.className = "open-hint";
@@ -569,6 +582,7 @@
       document.getElementById("reveal-btn").classList.remove("hidden");
       document.getElementById("next-btn").classList.add("hidden");
     }
+    document.getElementById("reveal-btn").textContent = current.type === "conversation" ? "Show a follow-up" : "Reveal answer";
     document.getElementById("next-btn").textContent = current.type === "scavenger" ? "Next item" : "Next question";
   }
 
@@ -581,7 +595,7 @@
   document.getElementById("reveal-btn").addEventListener("click", function(){
     revealed = true;
     document.getElementById("reveal-answer").textContent = current.a;
-    document.getElementById("reveal-label").textContent = current.type === "wyr" ? "Worth knowing" : "Answer";
+    document.getElementById("reveal-label").textContent = { wyr: "Worth knowing", conversation: "Dig deeper" }[current.type] || "Answer";
     var factEl = document.getElementById("reveal-fact");
     factEl.textContent = current.fact || "";
     factEl.style.display = current.fact ? "block" : "none";
