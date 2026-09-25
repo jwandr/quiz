@@ -10,8 +10,8 @@ const QUESTIONS = [
     "q": "What is the longest river in the world?",
     "a": "Nile",
     "opts": [
-      "Amazon",
       "Nile",
+      "Amazon",
       "Yangtze",
       "Mississippi"
     ],
@@ -25,8 +25,8 @@ const QUESTIONS = [
     "a": "Antarctic Desert",
     "opts": [
       "Sahara",
-      "Antarctic Desert",
       "Arabian Desert",
+      "Antarctic Desert",
       "Gobi Desert"
     ],
     "fact": "By the technical definition of 'desert' (low precipitation), Antarctica is the largest."
@@ -102,9 +102,9 @@ const QUESTIONS = [
     "a": "Ethiopia",
     "opts": [
       "Eritrea",
-      "Ethiopia",
       "Sudan",
-      "Somalia"
+      "Somalia",
+      "Ethiopia"
     ]
   },
   {
@@ -128,8 +128,8 @@ const QUESTIONS = [
     "q": "Which sea is the saltiest large body of water on Earth?",
     "a": "The Dead Sea",
     "opts": [
-      "The Red Sea",
       "The Dead Sea",
+      "The Red Sea",
       "The Caspian Sea",
       "The Black Sea"
     ]
@@ -138,8 +138,8 @@ const QUESTIONS = [
     "id": 14,
     "cat": "Geography & Nature",
     "type": "tf",
-    "q": "The Sahara Desert is roughly the same size as the entire United States.",
-    "a": "True"
+    "q": "The Sahara Desert is roughly half the size of the entire United States.",
+    "a": "False"
   },
   {
     "id": 15,
@@ -155,8 +155,8 @@ const QUESTIONS = [
     "q": "What is the world's largest island (not counting Australia, which is classed as a continent)?",
     "a": "Greenland",
     "opts": [
-      "Greenland",
       "New Guinea",
+      "Greenland",
       "Borneo",
       "Madagascar"
     ]
@@ -183,8 +183,8 @@ const QUESTIONS = [
     "a": "Zimbabwe",
     "opts": [
       "Mozambique",
-      "Zimbabwe",
       "Angola",
+      "Zimbabwe",
       "Namibia"
     ]
   },
@@ -203,9 +203,9 @@ const QUESTIONS = [
     "a": "Australia",
     "opts": [
       "Philippines",
-      "Australia",
       "Indonesia",
-      "Fiji"
+      "Fiji",
+      "Australia"
     ]
   },
   {
@@ -236,9 +236,9 @@ const QUESTIONS = [
     "q": "What is the currency of Japan?",
     "a": "Yen",
     "opts": [
+      "Yen",
       "Yuan",
       "Won",
-      "Yen",
       "Ringgit"
     ]
   },
@@ -283,9 +283,9 @@ const QUESTIONS = [
     "q": "Which strait separates Europe from Africa at its narrowest point?",
     "a": "The Strait of Gibraltar",
     "opts": [
-      "The Strait of Gibraltar",
       "The Bosphorus",
       "The Dardanelles",
+      "The Strait of Gibraltar",
       "The Strait of Hormuz"
     ]
   },
@@ -293,8 +293,8 @@ const QUESTIONS = [
     "id": 31,
     "cat": "Geography & Nature",
     "type": "tf",
-    "q": "Lake Baikal in Russia is the deepest lake in the world.",
-    "a": "True"
+    "q": "Lake Baikal is the largest lake in the world by surface area.",
+    "a": "False"
   },
   {
     "id": 32,
@@ -312,8 +312,8 @@ const QUESTIONS = [
     "opts": [
       "Lake Erie",
       "Lake Huron",
-      "Lake Champlain",
-      "Lake Ontario"
+      "Lake Ontario",
+      "Lake Champlain"
     ]
   },
   {
@@ -337,9 +337,9 @@ const QUESTIONS = [
     "q": "The Amazon Rainforest is primarily located in which country?",
     "a": "Brazil",
     "opts": [
+      "Brazil",
       "Peru",
       "Colombia",
-      "Brazil",
       "Venezuela"
     ]
   },
@@ -384,9 +384,9 @@ const QUESTIONS = [
     "q": "The Great Fire of London occurred in which year?",
     "a": "1666",
     "opts": [
-      "1666",
       "1606",
       "1706",
+      "1666",
       "1756"
     ]
   },
@@ -401,8 +401,8 @@ const QUESTIONS = [
     "id": 43,
     "cat": "History",
     "type": "tf",
-    "q": "The Titanic sank on its maiden voyage.",
-    "a": "True"
+    "q": "The Titanic sank on its second voyage.",
+    "a": "False"
   },
   {
     "id": 44,
@@ -413,8 +413,8 @@ const QUESTIONS = [
     "opts": [
       "The Maya",
       "The Aztec",
-      "The Inca",
-      "The Olmec"
+      "The Olmec",
+      "The Inca"
     ]
   },
   {
@@ -438,8 +438,8 @@ const QUESTIONS = [
     "q": "The ancient city of Petra, carved into rose-coloured rock, is located in which country?",
     "a": "Jordan",
     "opts": [
-      "Egypt",
       "Jordan",
+      "Egypt",
       "Syria",
       "Israel"
     ]
@@ -492,9 +492,9 @@ const QUESTIONS = [
     "q": "Which country was the first to grant women the right to vote in national elections (1893)?",
     "a": "New Zealand",
     "opts": [
-      "New Zealand",
       "Australia",
       "Finland",
+      "New Zealand",
       "Norway"
     ]
   },
@@ -513,17 +513,17 @@ const QUESTIONS = [
     "a": "Three",
     "opts": [
       "Two",
-      "Three",
       "Four",
-      "Five"
+      "Five",
+      "Three"
     ]
   },
   {
     "id": 56,
     "cat": "History",
     "type": "tf",
-    "q": "Napoleon Bonaparte was born in Corsica.",
-    "a": "True"
+    "q": "Napoleon Bonaparte was born in mainland France.",
+    "a": "False"
   },
   {
     "id": 57,
@@ -539,8 +539,8 @@ const QUESTIONS = [
     "q": "Which empire was ruled by Genghis Khan?",
     "a": "The Mongol Empire",
     "opts": [
-      "The Ottoman Empire",
       "The Mongol Empire",
+      "The Ottoman Empire",
       "The Persian Empire",
       "The Byzantine Empire"
     ]
@@ -567,8 +567,8 @@ const QUESTIONS = [
     "a": "Egypt",
     "opts": [
       "Greece",
-      "Turkey",
       "Egypt",
+      "Turkey",
       "Lebanon"
     ]
   },
@@ -622,17 +622,17 @@ const QUESTIONS = [
     "a": "The Soviet Union",
     "opts": [
       "East Germany",
-      "The Soviet Union",
       "Poland",
-      "Czechoslovakia"
+      "Czechoslovakia",
+      "The Soviet Union"
     ]
   },
   {
     "id": 68,
     "cat": "History",
     "type": "tf",
-    "q": "The Eiffel Tower was originally intended to be a temporary structure.",
-    "a": "True"
+    "q": "The Eiffel Tower was originally intended to be a permanent structure.",
+    "a": "False"
   },
   {
     "id": 69,
@@ -648,8 +648,8 @@ const QUESTIONS = [
     "q": "Which country was formerly called 'Persia'?",
     "a": "Iran",
     "opts": [
-      "Iraq",
       "Iran",
+      "Iraq",
       "Turkey",
       "Afghanistan"
     ]
@@ -704,8 +704,8 @@ const QUESTIONS = [
     "a": "Au",
     "opts": [
       "Ag",
-      "Au",
       "Gd",
+      "Au",
       "Go"
     ]
   },
@@ -724,17 +724,17 @@ const QUESTIONS = [
     "a": "206",
     "opts": [
       "186",
-      "206",
       "226",
-      "246"
+      "246",
+      "206"
     ]
   },
   {
     "id": 79,
     "cat": "Science",
     "type": "tf",
-    "q": "A group of flamingos is called a 'flamboyance'.",
-    "a": "True"
+    "q": "A group of flamingos is called a 'parliament'.",
+    "a": "False"
   },
   {
     "id": 80,
@@ -750,8 +750,8 @@ const QUESTIONS = [
     "q": "What is the hardest natural substance on Earth?",
     "a": "Diamond",
     "opts": [
-      "Quartz",
       "Diamond",
+      "Quartz",
       "Titanium",
       "Graphite"
     ]
@@ -805,8 +805,8 @@ const QUESTIONS = [
     "a": "The cell",
     "opts": [
       "The atom",
-      "The cell",
       "The molecule",
+      "The cell",
       "The organelle"
     ]
   },
@@ -832,17 +832,17 @@ const QUESTIONS = [
     "a": "Hydrogen",
     "opts": [
       "Helium",
-      "Hydrogen",
       "Oxygen",
-      "Carbon"
+      "Carbon",
+      "Hydrogen"
     ]
   },
   {
     "id": 91,
     "cat": "Science",
     "type": "tf",
-    "q": "Octopuses have three hearts.",
-    "a": "True"
+    "q": "Octopuses have two hearts.",
+    "a": "False"
   },
   {
     "id": 92,
@@ -914,8 +914,8 @@ const QUESTIONS = [
     "a": "Albert Einstein",
     "opts": [
       "Isaac Newton",
-      "Albert Einstein",
       "Niels Bohr",
+      "Albert Einstein",
       "Galileo Galilei"
     ]
   },
